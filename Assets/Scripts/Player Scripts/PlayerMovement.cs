@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpHeight = 3.8f;
     [SerializeField] private float gravity = -25f;
-
+    
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundRadius = 0.25f;
@@ -24,11 +24,11 @@ public class PlayerMovement : MonoBehaviour
 
     public Vector2 CurrentInput
     {
-    get
-    {
-        Vector2 kb = _controls.Player.Move.ReadValue<Vector2>();
-        return kb.sqrMagnitude > 0.01f ? kb : MobileMove;
-    }
+        get
+        {
+            Vector2 kb = _controls.Player.Move.ReadValue<Vector2>();
+            return kb.sqrMagnitude > 0.01f ? kb : MobileMove;
+        }
     }
 
 
@@ -93,7 +93,9 @@ private void HandleMove()
 
     move.y = _velocity.y;
     _cc.Move(move * Time.deltaTime);
-
+    this.transform.LookAt (new Vector3(-move.z,
+                                        this.transform.position.y,
+                                        move.x));
     // Decay push velocity so it doesn't linger after contact ends
     _treePushVelocity = Vector3.Lerp(_treePushVelocity, Vector3.zero, 15f * Time.deltaTime);
 }
